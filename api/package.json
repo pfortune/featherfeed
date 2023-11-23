@@ -1,0 +1,26 @@
+{
+  "name": "feather-feed-api",
+  "version": "1.0.0",
+  "description": "Backend API for Feather Feed, handing bird detection data and user notifications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pfortune/FeatherFeed.git"
+  },
+  "keywords": [
+    "\"bird-watching\"",
+    "\"Hapi\"",
+    "\"API\"",
+    "\"IoT\"",
+    "\"wildlife\""
+  ],
+  "author": "Peter Fortune",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pfortune/FeatherFeed/issues"
+  },
+  "homepage": "https://github.com/pfortune/FeatherFeed#readme"
+}
