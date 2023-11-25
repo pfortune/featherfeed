@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/pfortune/FeatherFeed/issues"
   },
-  "homepage": "https://github.com/pfortune/FeatherFeed#readme"
+  "homepage": "https://github.com/pfortune/FeatherFeed#readme",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2"
+  }
 }
