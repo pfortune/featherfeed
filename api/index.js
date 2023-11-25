@@ -4,11 +4,10 @@ const Hapi = require('@hapi/hapi');
 // Create a new Hapi server with CORS enabled
 const server = Hapi.server({
     port: process.env.PORT || 3000,
-    host: 'localhost',
     routes: {
         cors: {
-            origin: ['http://localhost:5173'], // Allow requests from any origin
-            credentials: true // Allow cookie-based authentication
+            origin: ['https://featherfeed.ie'], 
+            additionalHeaders: ['cache-control', 'x-requested-with']    
         }
     }
 });
