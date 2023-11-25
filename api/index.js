@@ -3,7 +3,7 @@ const Hapi = require('@hapi/hapi');
 
 // Create a new Hapi server with CORS enabled
 const server = Hapi.server({
-    port: 3000,
+    port: process.env.PORT || 3000,
     host: 'localhost',
     routes: {
         cors: {
