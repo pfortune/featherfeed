@@ -27,5 +27,8 @@
   "homepage": "https://github.com/pfortune/FeatherFeed#readme",
   "dependencies": {
     "@hapi/hapi": "^21.3.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.5"
   }
 }

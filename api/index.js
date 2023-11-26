@@ -12,6 +12,22 @@ const server = Hapi.server({
     }
 });
 
+// Define the default root route
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: (request, h) => {
+        return `
+            <h1>API Endpoints</h1>
+            <ul>
+                <li><a href="/status">/status</a> - Check API status</li>
+            </ul>
+        `;
+    }
+});
+
+
+
 // Define the status route
 server.route({
     method: 'GET',
@@ -20,6 +36,7 @@ server.route({
         return { status: 'OK' };
     }
 });
+
 
 // Start the server
 const start = async () => {
