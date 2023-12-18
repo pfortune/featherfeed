@@ -6,7 +6,7 @@
           title="Live Bird Watching Feed"
           src="https://customer-sm04v2metejg0xy7.cloudflarestream.com/c7412d9c564446fe28d78103e094cca9/iframe"
           style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
-          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;allowfullscreen;fullscreen"
+          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;allowfullscreen;"
         ></iframe>
       </div>
   </div>
