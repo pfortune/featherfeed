@@ -1,7 +1,7 @@
 <div class="container mx-auto p-4">
   <h2 class="text-2xl font-bold mb-4">Live Bird Watching Feed</h2>
-  <div class="video-wrapper" style="position: relative; padding-top: 100%;">
-    <div style="position: relative; padding-top: 56.25%;">
+  <div class="video-wrapper">
+    <div>
         <iframe
           title="Live Bird Watching Feed"
           src="https://customer-sm04v2metejg0xy7.cloudflarestream.com/c7412d9c564446fe28d78103e094cca9/iframe"
