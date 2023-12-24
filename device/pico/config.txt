@@ -1,0 +1,7 @@
+# wifi
+SSID=
+PASSWORD=
+
+# mqtt
+MQTTSERVER=
+CLIENTID=
