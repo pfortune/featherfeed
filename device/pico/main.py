@@ -1,6 +1,4 @@
 import wifi
-import mqtt
-import network
 import time
 
 # Load SSID and password from config file
@@ -10,8 +8,7 @@ ssid, password = wifi.load_config('config.txt')
 wifi.connect(ssid, password)
 
 while True:
-    wlan = network.WLAN(network.STA_IF)
-    if wifi.is_connected(wlan):
+    if wifi.is_connected(wifi.wlan):
         print("Still connected!")
     else:
         print("Lost connection, attempting to reconnect...")

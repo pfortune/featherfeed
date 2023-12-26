@@ -1,6 +1,8 @@
 import network
 import time
 
+wlan = network.WLAN(network.STA_IF)
+
 def load_config(filename):
     with open(filename, 'r') as f:
         lines = f.readlines()
@@ -11,7 +13,6 @@ def load_config(filename):
     return config['SSID'], config['PASSWORD']
 
 def connect(ssid, password):
-    wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     wlan.connect(ssid, password)
     
@@ -30,7 +31,6 @@ def connect(ssid, password):
         print(f"Failed to connect to {ssid}. Check your details and try again.")
 
 def disconnect():
-    wlan = network.WLAN(network.STA_IF)
     if wlan.isconnected():
         wlan.disconnect()
         wlan.active(False)
