@@ -1,11 +1,10 @@
 import machine
 import time
-import utime
-
-# Initialize the signal pin (replace 'x' with the actual pin number)
-signal_pin = machine.Pin(20, machine.Pin.OUT)
 
 def read_distance():
+    # Initialize the signal pin (replace 'x' with the actual pin number)
+    signal_pin = machine.Pin(20, machine.Pin.OUT)
+
     # Set the pin to low and give a short delay to settle
     signal_pin.low()
     time.sleep_us(2)
@@ -30,8 +29,3 @@ def read_distance():
     signal_pin.init(machine.Pin.OUT)
 
     return distance
-
-while True:
-    distance = read_distance()
-    print("Distance:", distance, "cm")
-    utime.sleep(1)
