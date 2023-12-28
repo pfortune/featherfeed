@@ -19,7 +19,7 @@ meta_data = {}
 # Function to start recording
 def start_recording(filename):
     global current_recording_process
-    current_recording_process = subprocess.Popen(["libcamera-vid", "-o", filen>
+    current_recording_process = subprocess.Popen(["libcamera-vid", "-o", filename])
     print(f"Started recording: {filename}")
 
 # Function to stop recording
