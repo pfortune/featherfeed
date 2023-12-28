@@ -10,13 +10,14 @@ recording_topic = "featherfeed/camera/recording_done"
 
 # Global variable to track recording status
 is_recording = False
+filename_video = ""
 current_recording_process = None
 meta_data = {}
 
 # Function to start recording
 def start_recording(filename):
     global current_recording_process
-    current_recording_process = subprocess.Popen(["libcamera-vid", "-o", filename])
+    current_recording_process = subprocess.Popen(["libcamera-vid", "-o", filen>
     print(f"Started recording: {filename}")
 
 # Function to stop recording
@@ -24,8 +25,8 @@ def stop_recording():
     global current_recording_process
     if current_recording_process:
         current_recording_process.terminate()
+        current_recording_process.wait()
         print("Stopped recording")
-
 
 # Callback function when connected to MQTT Broker
 def on_connect(client, userdata, flags, rc):
@@ -34,25 +35,24 @@ def on_connect(client, userdata, flags, rc):
 
 # Callback function when a message is received
 def on_message(client, userdata, msg):
-    global is_recording
+    global is_recording, filename_video
     payload = json.loads(msg.payload)
     visitor = payload.get("visitor", False)
 
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename_video = f"/home/pfortune/video/video_{timestamp}.h264"
-
     if visitor and not is_recording:
         is_recording = True
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename_video = f"/home/pfortune/video/video_{timestamp}.h264"
         start_recording(filename_video)
     elif not visitor and is_recording:
         is_recording = False
         stop_recording()
+        
         # Publishing the recording completion message
         completion_message = json.dumps({
                 "recorded_file": filename_video,
                 "temperature": payload.get("temperature"),
-                "humidity": payload.get("humidity"),
-                "timestamp": timestamp
+                "humidity": payload.get("humidity")
         })
         client.publish(recording_topic, completion_message)
 
