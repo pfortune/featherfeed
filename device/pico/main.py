@@ -16,7 +16,7 @@ ssid, password = wifi.load_config('config.txt')
 wifi.connect(ssid, password)
 
 # MQTT topic
-topic = 'test/topic'
+topic = 'featherfeed/sensor/reading'
 
 def main():
     # Connect to MQTT

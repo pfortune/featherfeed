@@ -2,24 +2,21 @@ import paho.mqtt.client as mqtt
 import json
 import datetime
 import subprocess
-import threading
-import os
 
 # MQTT configurations
 broker_address = "192.168.178.29"  # Change to your broker's IP
-topic = "test/topic"
-recording_topic = "test/recording_done"
+topic = "featherfeed/sensor/reading"
+recording_topic = "featherfeed/camera/recording_done"
 
 # Global variable to track recording status
 is_recording = False
 current_recording_process = None
-recorded_files = []
+meta_data = {}
 
 # Function to start recording
 def start_recording(filename):
     global current_recording_process
     current_recording_process = subprocess.Popen(["libcamera-vid", "-o", filename])
-    recorded_files.append(filename)
     print(f"Started recording: {filename}")
 
 # Function to stop recording
@@ -28,6 +25,7 @@ def stop_recording():
     if current_recording_process:
         current_recording_process.terminate()
         print("Stopped recording")
+
 
 # Callback function when connected to MQTT Broker
 def on_connect(client, userdata, flags, rc):
@@ -41,7 +39,7 @@ def on_message(client, userdata, msg):
     visitor = payload.get("visitor", False)
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename_video = f"/path/to/save/video_{timestamp}.h264"
+    filename_video = f"/home/pfortune/video/video_{timestamp}.h264"
 
     if visitor and not is_recording:
         is_recording = True
@@ -50,7 +48,12 @@ def on_message(client, userdata, msg):
         is_recording = False
         stop_recording()
         # Publishing the recording completion message
-        completion_message = json.dumps({"recorded_files": recorded_files})
+        completion_message = json.dumps({
+                "recorded_file": filename_video,
+                "temperature": payload.get("temperature"),
+                "humidity": payload.get("humidity"),
+                "timestamp": timestamp
+        })
         client.publish(recording_topic, completion_message)
 
 # Setup MQTT client
