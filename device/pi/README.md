@@ -31,3 +31,21 @@ With the Raspberry Pi 4 successfully set up with the Coral TPU using Google's AI
 
 ## Step 2: Verify MQTT Broker Status
 - Check Mosquitto Status: In the terminal, type `sudo systemctl status mosquitto` and press Enter. You should see an output indicating that Mosquitto is active and running.
+
+## SSH Key-Based Authentication
+This step is significant as it allows the Raspberry Pi to transfer files from the Raspberry Pi Zero 2W without the need for entering passwords.
+
+- **Generate an SSH Key Pair**: 
+  Run the following command to create a new SSH key pair. I chose not to set a passphrase for this key pair to facilitate smoother access.
+
+  ```
+  ssh-keygen -t rsa -b 4096 -C "pfortune@gmail.com"
+  ```
+
+- **Transferring the Key to Raspberry Pi Zero**: 
+Deploy the generated key to the Raspberry Pi Zero using this command. This step is crucial to establish a secure and password-less connection between the Raspberry Pi 4 and the Pi Zero 2W.
+
+```
+ssh-copy-id pfortune@192.168.178.37
+```
+
