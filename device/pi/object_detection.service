@@ -1,0 +1,15 @@
+[Unit]
+Description=Object Detection Service
+After=network-online.target
+
+[Service]
+ExecStartPre=/bin/sleep 10
+ExecStart=/usr/bin/python3 /home/pfortune/Code/main.py
+WorkingDirectory=/home/pfortune/Code
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pfortune
+
+[Install]
+WantedBy=multi-user.target
