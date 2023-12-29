@@ -17,11 +17,6 @@ def transfer_file(remote_path, local_path):
     # Execute SCP command and return the result status
     return subprocess.run(scp_command, shell=True).returncode == 0
 
-# Function to publish detection results to MQTT
-def publish_detection(client, detection_data):
-    # Publishes detection data as JSON to the specified MQTT topic
-    client.publish("featherfeed/classifier/bird_detected", json.dumps(detection_data))
-
 # Function to delete a local file, typically after processing
 def delete_local_file(file_path):
     # Check if file exists before attempting to delete
@@ -30,7 +25,7 @@ def delete_local_file(file_path):
         print(f"Deleted file: {file_path}")
 
 # Function to handle the video file processing and subsequent actions
-def process_video_file(client, video_file_local, temperature, humidity):
+def analyse_video_file(client, video_file_local, temperature, humidity):
     # Run bird detection on the video file
     detections, saved_frame_path = run_bird_detection(video_file_local)
     
@@ -47,7 +42,7 @@ def process_video_file(client, video_file_local, temperature, humidity):
             "file_name": video_file_local,
             "saved_frame": saved_frame_path
         }
-        publish_detection(client, detection_data)
+        client.publish("featherfeed/classifier/bird_detected", json.dumps(detection_data))
     else:
         # If no birds are detected, publish a no-detection message and delete the video file
         client.publish("featherfeed/classifier/no_bird_detected", "No bird detected")
@@ -76,7 +71,7 @@ def on_message(client, userdata, msg):
         if transfer_file(video_file_remote, video_file_local):
             client.publish("featherfeed/video/copied", video_file_remote)
             time.sleep(1)
-            process_video_file(client, video_file_local, temperature, humidity)
+            analyse_video_file(client, video_file_local, temperature, humidity)
 
 # Setup MQTT client and define callback functions
 client = mqtt.Client()
