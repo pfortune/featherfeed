@@ -43,9 +43,9 @@ This step is significant as it allows the Raspberry Pi to transfer files from th
   ```
 
 - **Transferring the Key to Raspberry Pi Zero**: 
-Deploy the generated key to the Raspberry Pi Zero using this command. This step is crucial to establish a secure and password-less connection between the Raspberry Pi 4 and the Pi Zero 2W.
+  Deploy the generated key to the Raspberry Pi Zero using this command. This step is crucial to establish a secure and password-less connection between the Raspberry Pi 4 and the Pi Zero 2W.
 
-```
-ssh-copy-id pfortune@192.168.178.37
-```
+  ```
+  ssh-copy-id pfortune@192.168.178.37
+  ```
 
