@@ -1,10 +1,11 @@
 import paho.mqtt.client as mqtt
+from bird_classifier import run_bird_detection
 import json
 import time
 import subprocess
 
 # MQTT configurations
-broker_address = "localhost"  
+broker_address = "localhost"  # Change to your broker's IP
 recording_topic = "featherfeed/camera/recording_done"
 
 def on_connect(client, userdata, flags, rc):
@@ -26,11 +27,20 @@ def on_message(client, userdata, msg):
 
         if scp_result.returncode == 0:
             # Publish a message indicating successful file transfer
-            client.publish("featherfeed/files/copied", video_file_remote)
+            client.publish("featherfeed/video/copied", video_file_remote)
             time.sleep(1)
-        else:
-            print("Error in file transfer")
 
+            # Run bird detection on the video
+            detections = run_bird_detection(video_file_local)
+            
+            # Handling based on detection
+            bird_detections = [(bird, score) for bird, score in detections if bird != 'background']
+            if bird_detections:
+                bird_species = max(bird_detections, key=lambda x: x[1])[0]
+                client.publish("featherfeed/classifier/bird_detected", f"Bird Detected: {bird_species}")
+            else:
+                client.publish("featherfeed/classifier/no_bird_detected", "No bird detected")
+                subprocess.run(["rm", video_file_local], shell=True)
 
 # Setup MQTT client
 client = mqtt.Client()

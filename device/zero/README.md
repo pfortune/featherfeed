@@ -39,6 +39,8 @@ Provide a brief introduction that outlines the purpose of the setup and the role
   - Execute `sudo ./install_pivariety_pkgs.sh -p libcamera`
 - Install 'libcamera-apps':
   - Execute `sudo ./install_pivariety_pkgs.sh -p libcamera_apps`
+- Install ffmpeg
+  - Execute `sudo apt-get update` and `sudo apt-get install ffmpeg`
 
 ## Configuration Modification
 - Modify the system configuration:
