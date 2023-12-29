@@ -1,53 +1,88 @@
 import paho.mqtt.client as mqtt
 from bird_classifier import run_bird_detection
+import os
 import json
 import time
+import datetime
 import subprocess
 
 # MQTT configurations
-broker_address = "localhost"  # Change to your broker's IP
+broker_address = "localhost"
 recording_topic = "featherfeed/camera/recording_done"
 
+# Function to transfer video file from Pi Zero to Pi4
+def transfer_file(remote_path, local_path):
+    # SCP command for file transfer
+    scp_command = f"scp pfortune@192.168.178.37:{remote_path} {local_path}"
+    # Execute SCP command and return the result status
+    return subprocess.run(scp_command, shell=True).returncode == 0
+
+# Function to publish detection results to MQTT
+def publish_detection(client, detection_data):
+    # Publishes detection data as JSON to the specified MQTT topic
+    client.publish("featherfeed/classifier/bird_detected", json.dumps(detection_data))
+
+# Function to delete a local file, typically after processing
+def delete_local_file(file_path):
+    # Check if file exists before attempting to delete
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print(f"Deleted file: {file_path}")
+
+# Function to handle the video file processing and subsequent actions
+def process_video_file(client, video_file_local, temperature, humidity):
+    # Run bird detection on the video file
+    detections, saved_frame_path = run_bird_detection(video_file_local)
+    
+    # If detections are found, publish the detection data
+    if detections:
+        # Determine the most likely bird species from detections
+        bird_species = max(detections, key=lambda x: x[1])[0]
+        # Prepare data for publishing
+        detection_data = {
+            "temperature": temperature,
+            "humidity": humidity,
+            "date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "bird_species": bird_species,
+            "file_name": video_file_local,
+            "saved_frame": saved_frame_path
+        }
+        publish_detection(client, detection_data)
+    else:
+        # If no birds are detected, publish a no-detection message and delete the video file
+        client.publish("featherfeed/classifier/no_bird_detected", "No bird detected")
+        delete_local_file(video_file_local)
+
+# Callback function for MQTT when connected
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
+    print("Connected with result code " + str(rc))
+    # Subscribe to the recording topic on successful connect
     client.subscribe(recording_topic)
 
+# Callback function for handling MQTT messages
 def on_message(client, userdata, msg):
     print(f"Message received on topic {msg.topic}")
-
+    
+    # Process messages from the recording topic
     if msg.topic == recording_topic:
-        # Parse message
         data = json.loads(msg.payload.decode("utf-8"))
-        video_file_remote = data['recorded_file']  # Path on Pi Zero
+        # Extract file paths and sensor data from message
+        video_file_remote = data['recorded_file']
         video_file_local = f"/home/pfortune/Code/video/{video_file_remote.split('/')[-1]}"
+        temperature = data.get("temperature")
+        humidity = data.get("humidity")
 
-        # SCP command to transfer file from Zero to Pi4
-        scp_command = f"scp pfortune@192.168.178.37:{video_file_remote} {video_file_local}"
-        scp_result = subprocess.run(scp_command, shell=True)
-
-        if scp_result.returncode == 0:
-            # Publish a message indicating successful file transfer
+        # Transfer file and process if successful
+        if transfer_file(video_file_remote, video_file_local):
             client.publish("featherfeed/video/copied", video_file_remote)
             time.sleep(1)
+            process_video_file(client, video_file_local, temperature, humidity)
 
-            # Run bird detection on the video
-            detections = run_bird_detection(video_file_local)
-            
-            # Handling based on detection
-            bird_detections = [(bird, score) for bird, score in detections if bird != 'background']
-            if bird_detections:
-                bird_species = max(bird_detections, key=lambda x: x[1])[0]
-                client.publish("featherfeed/classifier/bird_detected", f"Bird Detected: {bird_species}")
-            else:
-                client.publish("featherfeed/classifier/no_bird_detected", "No bird detected")
-                subprocess.run(["rm", video_file_local], shell=True)
-
-# Setup MQTT client
+# Setup MQTT client and define callback functions
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
+# Connect to the MQTT broker and start the loop
 client.connect(broker_address, 1883, 60)
-
-# Run the MQTT client
 client.loop_forever()

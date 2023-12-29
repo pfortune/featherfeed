@@ -1,16 +1,14 @@
 import cv2
-import subprocess
 from PIL import Image
-import numpy as np
-from pycoral.adapters import classify
-from pycoral.adapters import common
+from pycoral.adapters import classify, common
 from pycoral.utils.dataset import read_label_file
 from pycoral.utils.edgetpu import make_interpreter
 
-# Constants
+# Constants for model and label paths
 MODEL_PATH = 'models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite'
 LABELS_PATH = 'models/inat_bird_labels.txt'
 
+# Function to extract frames from the video at a specified interval
 def extract_frames(video_path, interval=30):
     print("Starting frame extraction...")
     frames = []
@@ -18,6 +16,7 @@ def extract_frames(video_path, interval=30):
     success, image = vidcap.read()
     count = 0
 
+    # Loop through video and extract frames at the defined interval
     while success:
         if count % interval == 0:
             frames.append(image)
@@ -29,6 +28,7 @@ def extract_frames(video_path, interval=30):
     print("Frame extraction completed.")
     return frames
 
+# Function to preprocess each frame for model input
 def preprocess_frame(frame, size):
     print("Preprocessing frame...")
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -37,6 +37,7 @@ def preprocess_frame(frame, size):
     print("Frame preprocessed.")
     return img
 
+# Function to classify a preprocessed frame using the Coral TPU
 def classify_frame(frame, interpreter, labels):
     print("Classifying frame...")
     common.set_input(interpreter, frame)
@@ -46,28 +47,39 @@ def classify_frame(frame, interpreter, labels):
     print("Classification completed.")
     return results
 
+# Main function to run bird detection on a video
 def run_bird_detection(video_path):
     print(f"Running bird detection on {video_path}")
 
-    # Load the model and labels
+    # Load the Coral TPU model and labels
     interpreter = make_interpreter(MODEL_PATH)
     interpreter.allocate_tensors()
     labels = read_label_file(LABELS_PATH)
     print("Model and labels loaded.")
 
-    # Extract frames from the video
+    # Extract frames from the video and classify each frame
+    saved_frame_path = None  # Placeholder for the path of the saved frame
     frames = extract_frames(video_path, interval=5)
 
-    # Process and classify each frame
-    detections = []
+    bird_detections = []
     for frame in frames:
+        # Preprocess and classify the frame
         preprocessed_frame = preprocess_frame(frame, common.input_size(interpreter))
         results = classify_frame(preprocessed_frame, interpreter, labels)
-        detections.extend([(bird, score) for bird, score in results if bird != 'background'])
+        
+        # Record detections and save the first detected frame
+        for bird, score in results:
+            if bird != 'background':
+                bird_detections.append((bird, score))
+                if saved_frame_path is None:
+                    frame_filename = video_path.rsplit('.', 1)[0] + '_detected.jpg'
+                    cv2.imwrite(frame_filename, frame)
+                    saved_frame_path = frame_filename
 
-    print("Bird detection completed.")
-    return detections
+    return bird_detections, saved_frame_path
 
 if __name__ == '__main__':
-    detections = run_bird_detection(video_path)
+    # Example path for testing
+    video_path = 'path/to/your/video.mp4'
+    detections, saved_frame_path = run_bird_detection(video_path)
     print("Detections:", detections)
