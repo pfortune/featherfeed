@@ -1,6 +1,7 @@
 <script context="module">
     export async function load({ params, fetch }) {
         try {
+            console.log(`Fetching detection with ID: ${params.id}`);
             const res = await fetch(`https://api.featherfeed.ie/detections/${params.id}`);
             if (res.ok) {
                 const detection = await res.json();
@@ -18,6 +19,7 @@
 
 <script>
     export let detection;
+    console.log(detection);
 </script>
 
 {#if detection}
