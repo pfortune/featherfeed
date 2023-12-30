@@ -49,3 +49,49 @@ This step is significant as it allows the Raspberry Pi to transfer files from th
   ssh-copy-id pfortune@192.168.178.37
   ```
 
+
+## Creating and Managing Services on the Raspberry Pi
+
+To enable the bird classification and upload functionalities to run as services, follow these steps:
+
+1. **Creating Service Files**:
+   - Create two service files: `bird_classifier.service` and `uploader.service`.
+   - Use the provided configurations for each service file.
+
+2. **Placing Service Files**:
+   - Place the service files in the `/etc/systemd/system/` directory.
+
+3. **Starting and Enabling Services**:
+   - To start the services, use the command:
+     ```
+     sudo systemctl start bird_classifier.service
+     sudo systemctl start uploader.service
+     ```
+   - To enable the services to start on boot, use:
+     ```
+     sudo systemctl enable bird_classifier.service
+     sudo systemctl enable uploader.service
+     ```
+
+## Installing Additional Python Packages
+
+You need to install `supabase` and `configparser` for the project to function properly. Use the following commands to install them:
+
+```
+pip3 install supabase
+pip3 install configparser
+```
+
+## Updating Configuration File
+
+The `config.sample.ini` file contains placeholders for various configurations. Update this file with your specific details:
+
+- **Supabase Configuration**: Add your Supabase project URL and API key.
+- **MQTT Configuration**: Set the MQTT broker address and port.
+- **SCP Configuration**: Provide the username and IP address for SCP file transfers.
+
+After updating, rename the file to `config.ini`:
+
+```
+mv config.sample.ini config.ini
+```
