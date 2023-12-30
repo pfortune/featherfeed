@@ -16,6 +16,15 @@ const server = Hapi.server({
     }
 });
 
+async function getPublicUrl(bucket, path) {
+    let { publicURL, error } = await supabase.storage.from(bucket).getPublicUrl(path);
+    if (error) {
+        console.error('Error getting public URL:', error.message);
+        return '';
+    }
+    return publicURL;
+}
+
 // Define the default root route
 server.route({
     method: 'GET',
@@ -26,7 +35,7 @@ server.route({
             <ul>
                 <li><a href="/status">/status</a> - Check API status</li>
                 <li><a href="/detections">/detections</a> - Fetch all detections</li>
-                <li>/detections/{id} - Fetch a specific detection by ID</li>
+                <li>/detection/{id} - Fetch a specific detection by ID</li>
             </ul>
         `;
     }
@@ -55,25 +64,32 @@ server.route({
             return h.response({ error: error.message }).code(500);
         }
 
+        for (let detection of data) {
+            detection.imagePublicUrl = await getPublicUrl('images', detection.imageref);
+        }
+
         return data;
     }
 });
 
-// Route to fetch a specific detection by ID
+
+// Route to fetch all detections
 server.route({
     method: 'GET',
-    path: '/detections/{id}',
+    path: '/detection',
     handler: async (request, h) => {
-        const id = request.params.id;
         const { data, error } = await supabase
             .from('detections')
-            .select('*')
-            .eq('id', id)
-            .single();
+            .select('*');
 
         if (error) {
-            console.error(`Error fetching detection with ID ${id}:`, error);
+            console.error('Error fetching detection:', error);
             return h.response({ error: error.message }).code(500);
+        }
+
+        for (let detection of data) {
+            detection.imagePublicUrl = await getPublicUrl('images', detection.imageref);
+            detection.videoPublicUrl = await getPublicUrl('videos', detection.videoref);
         }
 
         return data;
