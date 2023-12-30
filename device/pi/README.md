@@ -10,6 +10,12 @@
   curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add –
   ```
 
+# Automated Setup
+
+Run `bash ./setup.sh` to execute all the steps. Make sure to update the config.ini with your details. See below.
+
+# Manual Setup Instructions (Optional)
+
 ## Upgrading System Packages
 - Update and upgrade all packages (over 300) using:
   ```
@@ -48,9 +54,8 @@ This step is significant as it allows the Raspberry Pi to transfer files from th
   ```
   ssh-copy-id pfortune@192.168.178.37
   ```
-
-
-## Creating and Managing Services on the Raspberry Pi
+  
+# Creating and Managing Services
 
 To enable the bird classification and upload functionalities to run as services, follow these steps:
 
