@@ -17,7 +17,7 @@ const server = Hapi.server({
 });
 
 async function getPublicUrl(bucket, path) {
-    let { publicURL, error } = await supabase.storage.from(bucket).getPublicUrl(path);
+    let { publicURL, error } = await supabase.storage._from(bucket).get_public_url(path);
     if (error) {
         console.error('Error getting public URL:', error.message);
         return '';
