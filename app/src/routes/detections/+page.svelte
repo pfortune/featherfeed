@@ -16,29 +16,57 @@
     }
 </script>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Species</th>
-            <th>Temperature</th>
-            <th>Humidity</th>
-            <th>View</th>
-        </tr>
-    </thead>
-    <tbody>
-        {#each detections as detection}
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
             <tr>
-                <td>{detection.id}</td>
-                <td>{detection.date}</td>
-                <td>{detection.species}</td>
-                <td>{detection.temperature}°C</td>
-                <td>{detection.humidity}%</td>
-                <td>
-                    <button on:click={() => viewDetails(detection.id)}>Details</button>
-                </td>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ID
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Species
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Temperature
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Humidity
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    View
+                </th>
             </tr>
-        {/each}
-    </tbody>
-</table>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {#each detections as detection}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {detection.id}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {detection.date}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {detection.species}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {detection.temperature}°C
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {detection.humidity}%
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button
+                            class="text-indigo-600 hover:text-indigo-900"
+                            on:click={() => viewDetails(detection.id)}>
+                            Details
+                        </button>
+                    </td>
+                </tr>
+            {/each}
+        </tbody>
+    </table>
+</div>
