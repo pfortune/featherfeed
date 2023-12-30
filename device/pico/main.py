@@ -23,6 +23,11 @@ def main():
     mqtt.connect()
 
     while True:
+        # Check Wifi and Reconnect if necessary
+        if not wifi.is_connected():
+            print("Lost WiFi connection... Reconnecting")
+            wifi.connect(ssid, password)
+            
         # Read sensor data
         distance = ultrasonic.read_distance()
         temp, humidity = dht11.read_temp_humidity()
@@ -45,7 +50,7 @@ def main():
         
         # Publish sensor data
         mqtt.publish(topic, message)
-        time.sleep(2)  # Adjust sleep time as needed
+        time.sleep(1)  # Adjust sleep time as needed
 
 if __name__ == "__main__":
     main()
