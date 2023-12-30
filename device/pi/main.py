@@ -5,15 +5,24 @@ import json
 import time
 import datetime
 import subprocess
+import configparser
+
+# Load configuration
+print("Loading configuration...")
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+# File Transfer credentials
+scp_user = config['SCP']['scp_user']
+scp_host = config['SCP']['scp_host']
 
 # MQTT configurations
-broker_address = "localhost"
 recording_topic = "featherfeed/camera/recording_done"
 
 # Function to transfer video file from Pi Zero to Pi4
 def transfer_file(remote_path, local_path):
     # SCP command for file transfer
-    scp_command = f"scp pfortune@192.168.178.37:{remote_path} {local_path}"
+    scp_command = f"scp {scp_user}@{scp_host}:{remote_path} {local_path}"
     # Execute SCP command and return the result status
     return subprocess.run(scp_command, shell=True).returncode == 0
 
@@ -73,11 +82,15 @@ def on_message(client, userdata, msg):
             time.sleep(1)
             analyse_video_file(client, video_file_local, temperature, humidity)
 
-# Setup MQTT client and define callback functions
+# MQTT setup
+print("Setting up MQTT client...")
 client = mqtt.Client()
+mqtt_server = config['MQTT']['server']
+mqtt_port = int(config['MQTT']['port'])
 client.on_connect = on_connect
 client.on_message = on_message
+client.connect(mqtt_server, mqtt_port, 60)
 
-# Connect to the MQTT broker and start the loop
-client.connect(broker_address, 1883, 60)
+# Start the loop
+print("Starting MQTT loop...")
 client.loop_forever()
