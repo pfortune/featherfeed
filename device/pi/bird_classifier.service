@@ -1,5 +1,5 @@
 [Unit]
-Description=Object Detection Service
+Description=Bird Classifier Service
 After=network-online.target
 
 [Service]

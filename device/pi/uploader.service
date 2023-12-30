@@ -1,0 +1,15 @@
+[Unit]
+Description=Detection Uploader Service
+After=network-online.target
+
+[Service]
+ExecStartPre=/bin/sleep 10
+ExecStart=/usr/bin/python3 /home/pfortune/Code/uploader.py
+WorkingDirectory=/home/pfortune/Code
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pfortune
+
+[Install]
+WantedBy=multi-user.target

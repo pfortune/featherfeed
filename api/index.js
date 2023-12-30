@@ -26,8 +26,6 @@ server.route({
     }
 });
 
-
-
 // Define the status route
 server.route({
     method: 'GET',
