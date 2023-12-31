@@ -37,6 +37,11 @@
     function viewDetails(id) {
         goto(`/detection/${id}`);
     }
+
+    function formatDate(dateString) {
+        const options = { hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
 </script>
 
 
@@ -44,9 +49,6 @@
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    ID
-                </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Date
                 </th>
@@ -67,11 +69,8 @@
         <tbody class="bg-white divide-y divide-gray-200">
             {#each detections as detection}
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {detection.id}
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {detection.date}
+                        {formatDate(detection.date)}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {detection.species}
@@ -83,10 +82,7 @@
                         {detection.humidity}%
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <a href={`/detection/${detection.id}`}
-                           class="text-indigo-600 hover:text-indigo-900">
-                            Details
-                        </a>
+                        <button  on:click={() => viewDetails(detection.id)} type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">More Details</button>
                     </td>                    
                 </tr>
             {/each}

@@ -18,6 +18,11 @@
             errorMessage = `Error fetching detection: ${error.message}`;
         }
     }
+
+    function formatDate(dateString) {
+        const options = { hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
 </script>
 {#if detection}
     <div class="container mx-auto p-4">
@@ -30,7 +35,7 @@
             <!-- Left column for details -->
             <div class="w-full md:w-1/2 md:pr-4 mb-4">
                 <p><strong>ID:</strong> {detection.id}</p>
-                <p><strong>Date:</strong> {detection.date}</p>
+                <p><strong>Date:</strong> {formatDate(detection.date)}</p>
                 <p><strong>Species:</strong> {detection.species}</p>
                 <p><strong>Temperature:</strong> {detection.temperature}°C</p>
                 <p><strong>Humidity:</strong> {detection.humidity}%</p>
