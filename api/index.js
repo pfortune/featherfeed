@@ -72,7 +72,7 @@ server.route({
 });
 
 
-// Route to fetch all detections
+// Route fetch single detection
 server.route({
     method: 'GET',
     path: '/detection/{id}',
@@ -81,21 +81,22 @@ server.route({
             .from('detections')
             .select('*')
             .eq('id', request.params.id);
-
-        console.log(request.params.id);
-
+    
         if (error) {
             console.error('Error fetching detection:', error);
             return h.response({ error: error.message }).code(500);
         }
-
-        for (let detection of data) {
-            detection.imageref = getPublicUrl('images', detection.imageref);
-            detection.videoref = getPublicUrl('videos', detection.videoref);
+    
+        if (data.length === 0) {
+            return h.response({ message: "Detection not found" }).code(404);
         }
-
-        return data;
-    }
+    
+        const detection = data[0];
+        detection.imageref = getPublicUrl('images', detection.imageref);
+        detection.videoref = getPublicUrl('videos', detection.videoref);
+    
+        return detection;
+    }    
 });
 
 // Start the server
