@@ -75,11 +75,14 @@ server.route({
 // Route to fetch all detections
 server.route({
     method: 'GET',
-    path: '/detection',
+    path: '/detection/{id}',
     handler: async (request, h) => {
         const { data, error } = await supabase
             .from('detections')
-            .select('*');
+            .select('*')
+            .eq('id', request.params.id);
+
+        console.log(request.params.id);
 
         if (error) {
             console.error('Error fetching detection:', error);
