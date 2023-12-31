@@ -5,9 +5,9 @@
             <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                 Discover Local Birds.<br />Engage with Feather Feed.
             </h2>
-            <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">
-                Join our community of bird enthusiasts. Monitor, identify, and learn about the birds visiting your garden.
-            </p>
+            <a href="/detections" class="mt-8 inline-block px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:text-lg">
+                View Detections
+            </a>
         </div>
     </div>
 </div>
