@@ -34,12 +34,6 @@
         }
     }
 
-    onDestroy(() => {
-        if (changesSubscription) {
-            supabase.removeSubscription(changesSubscription);
-        }
-    });
-
     function viewDetails(id) {
         goto(`/detection/${id}`);
     }
@@ -89,12 +83,11 @@
                         {detection.humidity}%
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button
-                            class="text-indigo-600 hover:text-indigo-900"
-                            on:click={() => viewDetails(detection.id)}>
+                        <a href={`/detection/${detection.id}`}
+                           class="text-indigo-600 hover:text-indigo-900">
                             Details
-                        </button>
-                    </td>
+                        </a>
+                    </td>                    
                 </tr>
             {/each}
         </tbody>
