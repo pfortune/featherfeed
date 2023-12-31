@@ -5,8 +5,8 @@
     import { goto } from '$app/navigation';
 
     // Initialize Supabase client
-    const supabaseUrl = 'https://ettvulzdphozuovhmubd.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0dHZ1bHpkcGhvenVvdmhtdWJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDA3NzkwOTUsImV4cCI6MjAxNjM1NTA5NX0.R9t2ZN959aFuMQX2c2OsMbif7EeSZRUmHDCi1zFZhgE';
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     let detections = [];
