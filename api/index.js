@@ -1,6 +1,8 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { createClient } from '@supabase/supabase-js'
-const Hapi = require('@hapi/hapi');
+import Hapi from '@hapi/hapi';
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
@@ -16,13 +18,9 @@ const server = Hapi.server({
     }
 });
 
-async function getPublicUrl(bucket, path) {
-    let { publicURL, error } = await supabase.storage._from(bucket).get_public_url(path);
-    if (error) {
-        console.error('Error getting public URL:', error.message);
-        return '';
-    }
-    return publicURL;
+function getPublicUrl(bucket, filePath) {
+    const projectDomain = process.env.SUPABASE_URL.replace('https://', '').replace('.supabase.co', '');
+    return `https://${projectDomain}.supabase.co/storage/v1/object/public/${bucket}/${filePath}`;
 }
 
 // Define the default root route
@@ -65,9 +63,10 @@ server.route({
         }
 
         for (let detection of data) {
-            detection.imagePublicUrl = await getPublicUrl('images', detection.imageref);
+            detection.imageref = getPublicUrl('images', detection.imageref);
+            detection.videoref = getPublicUrl('videos', detection.videoref);
         }
-
+        
         return data;
     }
 });
@@ -88,8 +87,8 @@ server.route({
         }
 
         for (let detection of data) {
-            detection.imagePublicUrl = await getPublicUrl('images', detection.imageref);
-            detection.videoPublicUrl = await getPublicUrl('videos', detection.videoref);
+            detection.imageref = getPublicUrl('images', detection.imageref);
+            detection.videoref = getPublicUrl('videos', detection.videoref);
         }
 
         return data;
