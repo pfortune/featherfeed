@@ -14,7 +14,7 @@
     });
 
     function viewDetails(id) {
-        goto(`/detections/${id}`);
+        goto(`/detection/${id}`);
     }
 </script>
 
