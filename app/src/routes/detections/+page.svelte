@@ -21,7 +21,7 @@
             .on('postgres_changes', { event: 'INSERT', schema: 'public' }, (payload) => {
                 // Filter for changes to the 'detections' table
                 if (payload.table === 'detections') {
-                    detections = [...detections, payload.new];
+                    detections = [payload.new, ...detections];
                 }
             })
             .subscribe();
