@@ -55,7 +55,8 @@ server.route({
     handler: async (request, h) => {
         const { data, error } = await supabase
             .from('detections')
-            .select('*');
+            .select('*')
+            .order('date', { ascending: false }); // Sort by 'date' in descending order
 
         if (error) {
             console.error('Error fetching detections:', error);
@@ -70,7 +71,6 @@ server.route({
         return data;
     }
 });
-
 
 // Route fetch single detection
 server.route({
