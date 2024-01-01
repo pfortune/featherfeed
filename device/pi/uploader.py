@@ -39,7 +39,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected to MQTT with result code "+str(rc))
     client.subscribe("featherfeed/classifier/bird_detected")
 
-ddef on_message(client, userdata, msg):
+def on_message(client, userdata, msg):
     print(f"Received message on topic: {msg.topic}")
     data = json.loads(msg.payload)
     print(f"Message data: {data}")

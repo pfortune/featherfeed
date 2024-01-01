@@ -52,7 +52,7 @@
         <p class="mt-2 text-sm text-gray-700">A list of all bird detections including date, species, temperature, and humidity.</p>
       </div>
     </div>
-    <div class="-mx-4 mt-8 sm:-mx-6 lg:mx-0">
+    <div class="-mx-4 mt-8 sm:mx-0 lg:mx-0">
       <table class="min-w-full divide-y divide-gray-300">
         <thead class="bg-gray-50">
           <tr>
