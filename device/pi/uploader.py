@@ -39,24 +39,32 @@ def on_connect(client, userdata, flags, rc):
     print("Connected to MQTT with result code "+str(rc))
     client.subscribe("featherfeed/classifier/bird_detected")
 
-def on_message(client, userdata, msg):
+ddef on_message(client, userdata, msg):
     print(f"Received message on topic: {msg.topic}")
     data = json.loads(msg.payload)
     print(f"Message data: {data}")
 
-    # Upload files to Supabase
     try:
+        # Upload files to Supabase
         image_path = upload_file(supabase, data['saved_frame'], 'images')
         video_path = upload_file(supabase, data['file_name'], 'videos')
         print(f"Image uploaded to path: {image_path}")
         print(f"Video uploaded to path: {video_path}")
 
-        # Insert data into Supabase database
+        # Splitting bird species into genus, species, and English names
+        bird_species = data['bird_species']
+        scientific_name, common_name = bird_species.split(' (')
+        genus, species = scientific_name.split(' ')
+        common_name = common_name.rstrip(')')
+
+        # Insert data into Supabase database with separate fields
         insert_data = {
             "temperature": data['temperature'],
             "humidity": data['humidity'],
             "date": data['date'],
-            "species": data['bird_species'],
+            "genus": genus,
+            "species": species,
+            "common_name": common_name,
             "videoref": video_path,
             "imageref": image_path
         }

@@ -23,11 +23,16 @@
         const options = { hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     }
+
+    function formatScientificName(genus, species) {
+        return `${genus} ${species}`;
+    }
 </script>
+
 {#if detection}
     <div class="container mx-auto p-4">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-3xl font-bold">{detection.species}</h2>
+            <h2 class="text-3xl font-bold">{detection.common_name}</h2>
             <a href="/detections" class="text-blue-600 hover:text-blue-800 transition duration-300 ease-in-out">Back to List</a>
         </div>
 
@@ -36,12 +41,13 @@
             <div class="w-full md:w-1/2 md:pr-4 mb-4">
                 <p><strong>ID:</strong> {detection.id}</p>
                 <p><strong>Date:</strong> {formatDate(detection.date)}</p>
-                <p><strong>Species:</strong> {detection.species}</p>
+                <p><strong>Common Name:</strong> {detection.common_name}</p>
+                <p><strong>Scientific Name:</strong> {formatScientificName(detection.genus, detection.species)}</p>
                 <p><strong>Temperature:</strong> {detection.temperature}°C</p>
                 <p><strong>Humidity:</strong> {detection.humidity}%</p>
             </div>
 
-            <!-- Right column for image -->
+           <!-- Right column for image -->
             {#if detection.imageref}
                 <div class="w-full md:w-1/2">
                     <img src={detection.imageref} alt={`Image of ${detection.species}`} class="w-full h-auto rounded shadow" />

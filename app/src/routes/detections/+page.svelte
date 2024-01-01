@@ -72,14 +72,14 @@
               {formatDate(detection.date)}
               <dl class="font-normal lg:hidden">
                 <dt class="sr-only">Species</dt>
-                <dd class="mt-1 truncate text-gray-700">{detection.species}</dd>
+                <dd class="mt-1 truncate text-gray-700">{detection.common_name}</dd>
                 <dt class="sr-only">Temperature</dt>
                 <dd class="mt-1 truncate text-gray-500">{detection.temperature}°C</dd>
                 <dt class="sr-only">Humidity</dt>
-                <dd class="mt-1 truncate text-gray-500">{detection.humidity}%</dd>
+                <dd class="mt-1 truncate text-gray-500">{detection.humidity}% Humidity</dd>
               </dl>
             </td>
-            <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{detection.species}</td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{detection.common_name}</td>
             <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{detection.temperature}°C</td>
             <td class="px-3 py-4 text-sm text-gray-500">{detection.humidity}%</td>
             <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
