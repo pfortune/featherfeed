@@ -1,127 +1,142 @@
-<style>
-    table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-tr:hover {
-    background-color: #f5f5f5;
-}
-
-i {
-    margin-right: 8px;
-    color: #4a90e2; /* or any color you prefer */
-}
-
-.large-bird-image {
-    border-radius: 15px;
-}
-
-</style>
-
 <script>
-    import { page } from '$app/stores';
+	import { page } from '$app/stores';
 
-    let detection = null;
-    let errorMessage = '';
+	let detection = null;
+	let errorMessage = '';
 
-    $: loadDetection($page.params.id);
+	$: loadDetection($page.params.id);
 
-    async function loadDetection(id) {
-        try {
-            const response = await fetch(`https://api.featherfeed.ie/detection/${id}`);
-            if (response.ok) {
-                detection = await response.json();
-            } else {
-                errorMessage = `Failed to fetch detection: ${response.statusText}`;
-            }
-        } catch (error) {
-            errorMessage = `Error fetching detection: ${error.message}`;
-        }
-    }
+	async function loadDetection(id) {
+		try {
+			const response = await fetch(`https://api.featherfeed.ie/detection/${id}`);
+			if (response.ok) {
+				detection = await response.json();
+			} else {
+				errorMessage = `Failed to fetch detection: ${response.statusText}`;
+			}
+		} catch (error) {
+			errorMessage = `Error fetching detection: ${error.message}`;
+		}
+	}
 
-    function formatDate(dateString) {
-        const options = { hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    }
+	function formatDate(dateString) {
+		const options = {
+			hour: '2-digit',
+			minute: '2-digit',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		};
+		return new Date(dateString).toLocaleDateString(undefined, options);
+	}
 
-    function formatScientificName(genus, species) {
-        return `${genus} ${species}`;
-    }
+	function formatScientificName(genus, species) {
+		return `${genus} ${species}`;
+	}
 </script>
 
 {#if detection}
-    <div class="container mx-auto p-4">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-3xl font-bold">{detection.common_name}</h2>
-            <a href="/detections" class="text-blue-600 hover:text-blue-800 transition duration-300 ease-in-out">Back to List</a>
-        </div>
+	<div class="container mx-auto p-4">
+		<div class="flex justify-between items-center mb-4">
+			<h2 class="text-3xl font-bold text-indigo-800">
+				{detection.common_name}
+			</h2>
+			<a
+				href="/detections"
+				class="inline-block bg-blue-600 hover:bg-blue-800 text-white hover:shadow-lg rounded px-4 py-2"
+			>
+				<i class="fas fa-arrow-left" /> Back to List
+			</a>
+		</div>
 
-        <div class="flex flex-wrap md:flex-nowrap">
-            <!-- Left column for details -->
-            <div class="w-full md:w-1/2 md:pr-4 mb-4">
-                <table class="min-w-full">
-                    <tbody>
-                        <tr>
-                            <td><i class="fas fa-fingerprint"></i> ID:</td>
-                            <td>{detection.id}</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-calendar-alt"></i> Date:</td>
-                            <td>{formatDate(detection.date)}</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-dove"></i> Common Name:</td>
-                            <td>{detection.common_name}</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-dna"></i> Scientific Name:</td>
-                            <td>{formatScientificName(detection.genus, detection.species)}</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-thermometer-half"></i> Temperature:</td>
-                            <td>{detection.temperature}°C</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-tint"></i> Humidity:</td>
-                            <td>{detection.humidity}%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+		<div class="flex flex-wrap md:flex-nowrap">
+			<!-- Left column for details -->
+			<div class="w-full md:w-1/2 md:pr-4 mb-4">
+				<table class="min-w-full">
+					<tbody>
+						<tr>
+							<td><i class="fas fa-fingerprint" /> ID:</td>
+							<td>{detection.id}</td>
+						</tr>
+						<tr>
+							<td><i class="fas fa-calendar-alt" /> Date:</td>
+							<td>{formatDate(detection.date)}</td>
+						</tr>
+						<tr>
+							<td><i class="fas fa-dove" /> Common Name:</td>
+							<td>{detection.common_name}</td>
+						</tr>
+						<tr>
+							<td><i class="fas fa-dna" /> Scientific Name:</td>
+							<td>{formatScientificName(detection.genus, detection.species)}</td>
+						</tr>
+						<tr>
+							<td><i class="fas fa-thermometer-half" /> Temperature:</td>
+							<td>{detection.temperature}°C</td>
+						</tr>
+						<tr>
+							<td><i class="fas fa-tint" /> Humidity:</td>
+							<td>{detection.humidity}%</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
-            <!-- Right column for image -->
-            {#if detection.imageref}
-                <div class="w-full md:w-1/2">
-                    <img src={detection.imageref} alt={`Image of ${detection.species}`} class="w-full h-auto rounded large-bird-image shadow" />
-                </div>
-            {/if}
+			<!-- Right column for image -->
+			{#if detection.imageref}
+				<div class="w-full md:w-1/2">
+					<img
+						src={detection.imageref}
+						alt={`Image of ${detection.species}`}
+						class="w-full h-auto rounded large-bird-image shadow"
+					/>
+				</div>
+			{/if}
+		</div>
 
-        </div>
-
-        <!-- Full-width video -->
-        {#if detection.videoref}
-            <div class="w-full mt-4">
-                <strong>Video:</strong>
-                <!-- svelte-ignore a11y-media-has-caption -->
-                <video controls src={detection.videoref} class="w-full mt-2 rounded shadow">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        {/if}
-    </div>
+		<!-- Full-width video -->
+		{#if detection.videoref}
+			<div class="w-full mt-4">
+				<strong>Video:</strong>
+				<!-- svelte-ignore a11y-media-has-caption -->
+				<video controls src={detection.videoref} class="w-full mt-2 rounded shadow">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+		{/if}
+	</div>
 {:else}
-    <div class="container mx-auto p-4 text-center">
-        {#if errorMessage}
-            <p class="text-red-600">{errorMessage}</p>
-        {:else}
-            <p>Loading...</p>
-        {/if}
-    </div>
+	<div class="container mx-auto p-4 text-center">
+		{#if errorMessage}
+			<p class="text-red-600">{errorMessage}</p>
+		{:else}
+			<p>Loading...</p>
+		{/if}
+	</div>
 {/if}
+
+<style>
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	td {
+		padding: 8px;
+		text-align: left;
+		border-bottom: 1px solid #ddd;
+	}
+
+	tr:hover {
+		background-color: #f5f5f5;
+	}
+
+	i {
+		margin-right: 8px;
+		color: #4a90e2; /* or any color you prefer */
+	}
+
+	.large-bird-image {
+		border-radius: 15px;
+	}
+</style>
