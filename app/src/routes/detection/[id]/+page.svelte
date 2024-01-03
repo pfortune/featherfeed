@@ -96,10 +96,12 @@
 
 		<!-- Full-width video -->
 		{#if detection.videoref}
-			<div class="w-full mt-4">
-				<strong>Video:</strong>
+			<div class="w-full mt-4 bg-gray-100 p-4 rounded-lg shadow">
+				<h3 class="text-xl font-semibold flex items-center mb-2">
+					<i class="fas fa-video mr-2" /> Video
+				</h3>
 				<!-- svelte-ignore a11y-media-has-caption -->
-				<video controls src={detection.videoref} class="w-full mt-2 rounded shadow">
+				<video controls src={detection.videoref} class="w-full rounded">
 					Your browser does not support the video tag.
 				</video>
 			</div>
