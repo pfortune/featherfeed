@@ -1,3 +1,25 @@
+<style>
+  @keyframes highlightFade {
+    from {
+        background-color: lightgreen;
+    }
+    to {
+        background-color: white;
+    }
+  }
+
+  .highlight {
+    animation: highlightFade 3s ease;
+  }
+
+  .small-bird-image {
+    max-width: 150px; /* Adjust size as needed */
+    max-height: 150px; /* Adjust size as needed */
+    border-radius: 20%; /* Optional: for rounded corners */
+    padding: 5px;
+    } 
+</style>
+
 <script>
     // Import necessary modules
     import { onMount, onDestroy } from 'svelte';
@@ -21,9 +43,24 @@
             .on('postgres_changes', { event: 'INSERT', schema: 'public' }, (payload) => {
                 // Filter for changes to the 'detections' table
                 if (payload.table === 'detections') {
+                    const newDetection = {...payload.new, isNew: true};
                     detections = [payload.new, ...detections];
-                }
-            })
+
+                    setTimeout(()=> {
+                      newDetection.isNew = false;
+                    }, 3000);
+
+                      setTimeout(() => {
+                      // Update the detections array to trigger reactivity
+                        detections = detections.map(d => {
+                            if (d.id === newDetection.id) {
+                                return { ...d, isNew: false };
+                            }
+                            return d;
+                        });
+                     }, 3000);
+                  }
+                })
             .subscribe();
     });
 
@@ -60,6 +97,10 @@
             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Species</th>
             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">Temperature</th>
             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Humidity</th>
+            <th scope="col" class="hidden lg:table-cell"> <!-- Hide on mobile, show on larger screens -->
+              <!-- Optional: Icon or minimal text -->
+              <span class="sr-only">Bird Image</span> <!-- Screen-reader accessible text -->
+            </th>          
             <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
               <span class="sr-only">View</span>
             </th>
@@ -67,7 +108,7 @@
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
           {#each detections as detection}
-          <tr>
+          <tr class:highlight={detection.isNew}>
             <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0">
               {formatDate(detection.date)}
               <dl class="font-normal lg:hidden">
@@ -82,6 +123,11 @@
             <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{detection.common_name}</td>
             <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{detection.temperature}°C</td>
             <td class="px-3 py-4 text-sm text-gray-500">{detection.humidity}%</td>
+            <td class="hidden lg:table-cell"> <!-- Hide on mobile, show on larger screens -->
+              {#if detection.imageref}
+                  <img src={detection.imageref} alt={`Image of ${detection.species}`} class="small-bird-image" />
+              {/if}
+            </td>
             <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                 <button  on:click={() => viewDetails(detection.id)} type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">View</button></td>
           </tr>
@@ -90,4 +136,3 @@
       </table>
     </div>
   </div>
-  
