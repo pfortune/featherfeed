@@ -1,3 +1,30 @@
+<style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+i {
+    margin-right: 8px;
+    color: #4a90e2; /* or any color you prefer */
+}
+
+.large-bird-image {
+    border-radius: 15px;
+}
+
+</style>
+
 <script>
     import { page } from '$app/stores';
 
@@ -39,20 +66,43 @@
         <div class="flex flex-wrap md:flex-nowrap">
             <!-- Left column for details -->
             <div class="w-full md:w-1/2 md:pr-4 mb-4">
-                <p><strong>ID:</strong> {detection.id}</p>
-                <p><strong>Date:</strong> {formatDate(detection.date)}</p>
-                <p><strong>Common Name:</strong> {detection.common_name}</p>
-                <p><strong>Scientific Name:</strong> {formatScientificName(detection.genus, detection.species)}</p>
-                <p><strong>Temperature:</strong> {detection.temperature}°C</p>
-                <p><strong>Humidity:</strong> {detection.humidity}%</p>
+                <table class="min-w-full">
+                    <tbody>
+                        <tr>
+                            <td><i class="fas fa-fingerprint"></i> ID:</td>
+                            <td>{detection.id}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-calendar-alt"></i> Date:</td>
+                            <td>{formatDate(detection.date)}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-dove"></i> Common Name:</td>
+                            <td>{detection.common_name}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-dna"></i> Scientific Name:</td>
+                            <td>{formatScientificName(detection.genus, detection.species)}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-thermometer-half"></i> Temperature:</td>
+                            <td>{detection.temperature}°C</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-tint"></i> Humidity:</td>
+                            <td>{detection.humidity}%</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-           <!-- Right column for image -->
+            <!-- Right column for image -->
             {#if detection.imageref}
                 <div class="w-full md:w-1/2">
-                    <img src={detection.imageref} alt={`Image of ${detection.species}`} class="w-full h-auto rounded shadow" />
+                    <img src={detection.imageref} alt={`Image of ${detection.species}`} class="w-full h-auto rounded large-bird-image shadow" />
                 </div>
             {/if}
+
         </div>
 
         <!-- Full-width video -->
