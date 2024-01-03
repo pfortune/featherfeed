@@ -32,7 +32,11 @@ def upload_file(supabase: Client, file_path: str, bucket: str) -> str:
             file_options={"content-type": mime_type}
         )
         print(f"Upload response: {response}")
-        return stored_path
+
+        # Generate public URL
+        project_domain = supabase.supabase_url.replace('https://', '').replace('.supabase.co', '')
+        public_url = f"https://{project_domain}.supabase.co/storage/v1/object/public/{bucket}/{stored_path}"
+        return public_url
 
 # MQTT callbacks
 def on_connect(client, userdata, flags, rc):
