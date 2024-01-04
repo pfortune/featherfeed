@@ -37,23 +37,23 @@
 
 {#if detection}
 	<div class="container mx-auto p-4">
-		<div class="flex justify-between items-center mb-4">
-			<h2 class="text-3xl font-bold text-indigo-800">
+		<div class="flex justify-between items-center mb-6">
+			<h2 class="text-4xl font-bold text-indigo-800">
 				{detection.common_name}
 			</h2>
 			<a
 				href="/detections"
-				class="inline-block bg-blue-600 hover:bg-blue-800 text-white hover:shadow-lg rounded px-4 py-2"
+				class="inline-flex items-center bg-blue-600 hover:bg-blue-800 text-white hover:shadow-lg rounded px-4 py-2"
 			>
-				<i class="fas fa-arrow-left" /> Back to List
+				<i class="fas fa-arrow-left mr-2" /> Back to List
 			</a>
 		</div>
 
-		<div class="flex flex-wrap md:flex-nowrap">
+		<div class="flex flex-wrap md:flex-nowrap gap-4">
 			<!-- Left column for details -->
-			<div class="w-full md:w-1/2 md:pr-4 mb-4">
+			<div class="w-full md:w-1/2 bg-white p-4 rounded-lg shadow">
 				<table class="min-w-full">
-					<tbody>
+					<tbody class="text-gray-700">
 						<tr>
 							<td><i class="fas fa-fingerprint" /> ID:</td>
 							<td>{detection.id}</td>
@@ -84,11 +84,11 @@
 
 			<!-- Right column for image -->
 			{#if detection.imageref}
-				<div class="w-full md:w-1/2">
+				<div class="w-full md:w-1/2 bg-white p-4 rounded-lg shadow flex justify-center">
 					<img
 						src={detection.imageref}
 						alt={`Image of ${detection.species}`}
-						class="w-full h-auto rounded large-bird-image shadow"
+						class="w-auto h-64 rounded-lg"
 					/>
 				</div>
 			{/if}
