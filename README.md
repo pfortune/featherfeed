@@ -35,9 +35,9 @@ FeatherFeed is a smart bird feeder monitoring system that merges the beauty of n
 
 ## Installation Instructions
 
-- **Raspberry Pico W Setup**: Instructions in `device/pico` directory.
-- **Raspberry Pi Zero 2W Setup**: Instructions in `device/zero` directory.
-- **Raspberry Pi 4 Setup**: Instructions in `device/pi` directory.
+- [https://github.com/pfortune/FeatherFeed/blob/main/device/pico/README.md](**Raspberry Pico W Setup**): Instructions in `device/pico` directory.
+- [https://github.com/pfortune/FeatherFeed/blob/main/device/zero/README.md](**Raspberry Pi Zero 2W Setup**): Instructions in `device/zero` directory.
+- [https://github.com/pfortune/FeatherFeed/blob/main/device/pi/README.md](**Raspberry Pi 4 Setup**): Instructions in `device/pi` directory.
 
 ---
 
