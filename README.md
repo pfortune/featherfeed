@@ -6,6 +6,17 @@ An AI-enhanced bird feeder system using Raspberry Pi 4, Raspberry Pi Zero 2W, Go
 
 FeatherFeed is a smart bird feeder monitoring system that merges the beauty of nature with cutting-edge technology. The sytem uses Raspberry Pi 4, Raspberry Pi Zero 2W, Raspberry Pico W, and Google Coral TPU to detect, record, and identify birds that visit the feeder. The system alerts users about bird visitations a user-friendly web application.
 
+## Quick Start
+
+To get your FeatherFeed system up and running:
+
+1. **Assemble the Hardware**: Follow the setup instructions for each device.
+2. **Install the Software**: Use the provided scripts to install necessary packages and dependencies.
+3. **Configure the System**: Set up the Mosquitto broker, Coral TPU, and sensors as per the documentation.
+4. **Launch the Web App**: Access the web application to start monitoring bird activity in real-time.
+
+For a detailed guide, refer to the installation instructions for each device below.
+
 ## System Architecture
 
 - **Raspberry Pico W**: Equipped with an Ultrasonic Sensor, Temperature/Humidity Sensor, and LED light, it detects bird presence and publishes data on temperature, humidity, and visitor status.
