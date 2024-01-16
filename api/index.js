@@ -4,6 +4,7 @@ dotenv.config();
 import { createClient } from '@supabase/supabase-js';
 import Hapi from '@hapi/hapi';
 import Nes from '@hapi/nes';
+import Joi from 'joi';
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -95,6 +96,13 @@ server.route({
 server.route({
   method: 'GET',
   path: '/detection/{id}',
+  options: {
+    validate: {
+      params: Joi.object({
+        id: Joi.number().integer().required(),
+      }),
+    },
+  },
   handler: async (request, h) => {
     const { data, error } = await supabase
       .from('detections')
