@@ -3,6 +3,7 @@ dotenv.config();
 
 import { createClient } from '@supabase/supabase-js';
 import Hapi from '@hapi/hapi';
+import Nes from '@hapi/nes';
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -20,6 +21,10 @@ const server = Hapi.server({
     },
   },
 });
+
+await server.register(Nes);
+
+server.subscription('/detections/updates');
 
 // Define the default root route
 server.route({
@@ -62,6 +67,27 @@ server.route({
     }
 
     return data;
+  },
+});
+
+// Route to create a new detection
+server.route({
+  method: 'POST',
+  path: '/detection',
+  handler: async (request, h) => {
+    const { data, error } = await supabase
+      .from('detections')
+      .insert([request.payload]);
+
+    if (error) {
+      console.error('Error creating detection:', error);
+      return h.response({ error: error.message }).code(500);
+    }
+
+    const detection = data[0];
+
+    // Publish the new detection to the websocket
+    server.publish('/detections/updates', detection);
   },
 });
 
