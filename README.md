@@ -10,7 +10,7 @@ FeatherFeed is a smart bird feeder monitoring system that merges the beauty of n
 
 For a comprehensive overview of how FeatherFeed works and its features, check out our project video on YouTube:
 
-[![FeatherFeed Project Video](https://img.youtube.com/vi/ev2xdn1l5cQ/0.jpg)](https://www.youtube.com/watch?v=ev2xdn1l5cQ)
+[![FeatherFeed Project Video](https://img.youtube.com/vi/Bt4hTblc8nI/0.jpg)](https://www.youtube.com/watch?v=Bt4hTblc8nI)
 
 This video gives you a peek into the setup, functionality, and the technology behind this innovative bird feeder system.
 
