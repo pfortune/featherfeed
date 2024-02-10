@@ -23,7 +23,7 @@ def start_recording(filename):
 
     mp4_filename = filename.rsplit('.', 1)[0] + '.mp4'
     current_recording_process = subprocess.Popen(["libcamera-vid", "-o", "-"], stdout=subprocess.PIPE)
-    ffmpeg_process = subprocess.Popen(["ffmpeg", "-i", "-", "-c", "copy", mp4_filename], stdin=current_recording_process.stdout)
+    ffmpeg_process = subprocess.Popen(["ffmpeg", "-i", "-", "-vf", "vflip", "-c:v", "copy", mp4_filename], stdin=current_recording_process.stdout)
     print(f"Started recording: {mp4_filename}")
 
 # Function to stop recording

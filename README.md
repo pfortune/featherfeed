@@ -1,10 +1,35 @@
 # FeatherFeed
 
-An AI-enhanced bird feeder system using Raspberry Pi 4, Raspberry Pi Zero 2W, Google Coral TPU, and Raspberry Pico W for bird detection and recording.
+An AI-enhanced bird feeder system using Raspberry Pi 4, Raspberry Pi Zero 2W, Google Coral TPU, and Raspberry Pi Pico W for bird detection and recording.
 
 ## Introduction
 
-FeatherFeed is a smart bird feeder monitoring system that merges the beauty of nature with cutting-edge technology. The sytem uses Raspberry Pi 4, Raspberry Pi Zero 2W, Raspberry Pico W, and Google Coral TPU to detect, record, and identify birds that visit the feeder. The system alerts users about bird visitations a user-friendly web application.
+FeatherFeed is a smart bird feeder monitoring system that merges the beauty of nature with cutting-edge technology. The system uses Raspberry Pi 4, Raspberry Pi Zero 2W, Raspberry Pi Pico W, and Google Coral TPU to detect, record, and identify birds that visit the feeder. The system alerts users about bird visitations through a user-friendly web application.
+
+## Project Overview Video
+
+For a comprehensive overview of how FeatherFeed works and its features, check out our project video on YouTube:
+
+[![FeatherFeed Project Video](https://img.youtube.com/vi/ev2xdn1l5cQ/0.jpg)](https://www.youtube.com/watch?v=ev2xdn1l5cQ)
+
+This video gives you a peek into the setup, functionality, and the technology behind this innovative bird feeder system.
+
+## System Configurations
+
+Throughout the development of Feather Feed, we experimented with two different hardware configurations to optimise bird detection accuracy and system efficiency. Below are the descriptions and images of these configurations:
+
+### Configuration 1: Separate Sensor and Camera Setup
+
+In this setup, the ultrasonic sensor and the camera were placed on either side of the bird feeder box. This configuration allowed for a wide detection range but presented challenges in aligning the sensor's detection with the camera's field of view.
+
+![FeatherFeed Configuration 1](feeder-config1.jpg)
+
+### Configuration 2: Unified Sensor and Camera Setup
+
+After testing and evaluation, we found that placing both the ultrasonic sensor and the camera at the back of the box, pointing outwards, significantly improved the system's performance. This setup ensured that whenever a bird triggered the ultrasonic sensor, it was already in the camera's field of view, making for more efficient and accurate bird detection. This configuration will be the basis for Version 2 of the Feather Feed system.
+
+![FeatherFeed Configuration 2](feeder-config2.jpg)
+
 
 ## Quick Start
 

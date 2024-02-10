@@ -1,6 +1,7 @@
 import os
 import json
 import mimetypes
+import requests
 import paho.mqtt.client as mqtt
 from supabase import create_client, Client
 import configparser
@@ -72,8 +73,8 @@ def on_message(client, userdata, msg):
             "videoref": video_path,
             "imageref": image_path
         }
-        db_response = supabase.table("detections").insert(insert_data).execute()
-        print(f"Database insert response: {db_response}")
+        response = requests.post("https://api.featherfeed.ie/detection/", json=insert_data)
+        print(f"API response: {response.json()}")
     except Exception as e:
         print(f"Error: {e}")
 
