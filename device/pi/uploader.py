@@ -6,6 +6,12 @@ import paho.mqtt.client as mqtt
 from supabase import create_client, Client
 import configparser
 
+#TODO: Refactor to use classes
+#TODO: Add error handling
+#TODO: Add type hints
+#TODO: Remove supabase
+#TODO: Add logging
+
 # Load configuration
 print("Loading configuration...")
 config = configparser.ConfigParser()

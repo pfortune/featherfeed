@@ -7,6 +7,12 @@ import datetime
 import subprocess
 import configparser
 
+#TODO: Refactor to use classes
+#TODO: Add error handling
+#TODO: Add type hints
+#TODO: Add logging
+#TODO: More direct handling of events
+
 # Load configuration
 print("Loading configuration...")
 config = configparser.ConfigParser()

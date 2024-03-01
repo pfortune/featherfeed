@@ -4,6 +4,10 @@ from pycoral.adapters import classify, common
 from pycoral.utils.dataset import read_label_file
 from pycoral.utils.edgetpu import make_interpreter
 
+#TODO: Add type hints
+#TODO: Add logging
+#TODO: Add error handling
+
 # Constants for model and label paths
 MODEL_PATH = 'models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite'
 LABELS_PATH = 'models/inat_bird_labels.txt'
