@@ -19,6 +19,7 @@ Provide a brief introduction that outlines the purpose of the setup and the role
   - Select and enable 'Glamor graphic acceleration'
   - Reboot the Raspberry Pi to apply changes
 
+
 ## Camera Software Installation
 - Update the system packages:
   - Open a terminal window
@@ -27,35 +28,20 @@ Provide a brief introduction that outlines the purpose of the setup and the role
     sudo apt update
     sudo apt upgrade
     ```
-
-## Installing Camera Software
-- Download and prepare the installation scripts:
-  - Execute 
-    ```
-    wget -O install_pivariety_pkgs.sh https://github.com/ArduCAM/Arducam-Pivariety-V4L2-Driver/releases/download/install_script/install_pivariety_pkgs.sh
-    chmod +x install_pivariety_pkgs.sh
-    ```
-- Install 'libcamera':
-  - Execute `sudo ./install_pivariety_pkgs.sh -p libcamera`
-- Install 'libcamera-apps':
-  - Execute `sudo ./install_pivariety_pkgs.sh -p libcamera_apps`
+- Enable the camera via `sudo raspi-config`
+- Install Picamera
+  - Execute `sudo apt install python3-picamera`
 - Install ffmpeg
   - Execute `sudo apt-get update` and `sudo apt-get install ffmpeg`
 
-## Configuration Modification
-- Modify the system configuration:
-  - Edit the config file: `sudo nano /boot/config.txt`
-  - Add `dtoverlay=imx519` under the [all] section
-  - Save changes and exit the editor
-  - Reboot the system: `sudo reboot`
-
 ## Testing and Verification
 - Test the camera functionality:
-  - Execute `libcamera-still -t 3000 -o test.jpg`
+  - Execute `raspistill -o test.jpg`
 
 ## Transferring the Test Image
 - Transfer the image file to a personal computer:
-  - Execute `scp pfortune@192.168.178.37:/home/pfortune/test.jpg /Users/pfortune/Code/`
+  - Execute `scp <user>@192.168.178.37:/home/<user>/test.jpg /Users/<user>/`
+- Or review the image using VSCode and Remote SSH
 
 **Note:** The setup of the Raspberry Pi Zero 2W was successful, with functional network connectivity and camera operations. The device is now ready for the next stages of the project.
 
