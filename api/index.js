@@ -1,6 +1,5 @@
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
-import fastifyWebsocket from 'fastify-websocket';
 import routes from './routes.js';
 
 const app = Fastify({ logger: true });
@@ -10,8 +9,6 @@ async function setup() {
   await app.register(fastifyCors, {
     origin: ['https://featherfeed.ie'],
   });
-
-  await app.register(fastifyWebsocket);
 
   // Register each route
   routes.forEach((route) => {
